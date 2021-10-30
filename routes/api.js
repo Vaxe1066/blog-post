@@ -7,6 +7,14 @@ var posts_controller = require('../controllers/postsController');
 var user_controller = require('../controllers/userController');
 var comments_controller = require('../controllers/commentsController');
 
+const { verifySignUp } = require("../middlewares");
+const auth_controller = require("../controllers/auth.controller");
+
+
+
+//routes for authentication
+router.post('/auth/signup', [verifySignUp.checkDuplicateUsername], auth_controller.signup) 
+router.post("/auth/signin", auth_controller.signin);
 //routes for user - user routes
 
 router.get('/users', user_controller.user_get);
