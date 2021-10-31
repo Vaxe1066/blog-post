@@ -8,6 +8,7 @@ var async = require('async');
 exports.posts_list_get = function(req,res, next) { 
     Posts.find()
     .sort('timestamp')
+    .populate('author')
     .lean()
     .exec(function (err, results){
         if(err) {return next(err); }
@@ -19,6 +20,7 @@ exports.posts_list_get = function(req,res, next) {
 //get individual post
 exports.posts_detail_get = function(req,res, next) { 
     Posts.findById(req.params.id)
+    .populate('author')
     .lean()
     .exec(function (err, results){
         if(err) {return next(err)}

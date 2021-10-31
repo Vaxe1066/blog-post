@@ -4,8 +4,15 @@ var Comments = require('../models/comments');
 var async = require('async');
 
 
-exports.comments_posts_get = function(req,res){
-    res.send("Not implemeneted")
+exports.comments_posts_get = function(req,res, next){
+    Comments.find({blog: {$eq: req.params.id} })
+    .sort('timestamp')
+    .populate('author')
+    .lean()
+    .exec(function (err, results){
+        if(err) {return next(err); }
+        res.json(results);
+    })
 }
 
 
