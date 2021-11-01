@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const path = require('path');
 
+const { authJwt } = require("../middlewares");
+
 // Require controller modules.
 var posts_controller = require('../controllers/postsController');
 var user_controller = require('../controllers/userController');
@@ -27,11 +29,11 @@ router.post('/users/new', user_controller.user_new_post);
 
 router.get('/posts', posts_controller.posts_list_get);
 
-router.post('/posts', posts_controller.posts_new_post);
+router.post('/posts', [authJwt.verifyToken], posts_controller.posts_new_post);
 
 router.get('/posts/:id', posts_controller.posts_detail_get);
 
-router.delete('/posts/:id', posts_controller.posts_detail_delete);
+router.delete('/posts/:id', [authJwt.verifyToken], posts_controller.posts_detail_delete);
 
 
 
@@ -41,9 +43,9 @@ router.delete('/posts/:id', posts_controller.posts_detail_delete);
 router.get('/posts/:id/comments', comments_controller.comments_posts_get);
 
 //add comments to a particular post
-router.post('/posts/:id/comments', comments_controller.comments_posts_post);
+router.post('/posts/:id/comments', [authJwt.verifyToken], comments_controller.comments_posts_post);
 
-router.delete('/comments/:id', comments_controller.comments_delete);
+router.delete('/comments/:id', [authJwt.verifyToken], comments_controller.comments_delete);
 
 
 module.exports = router;
